@@ -81,10 +81,10 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data Pengunjung :</h6>
                         <a class="collapse-item" href="/sorong" target="_blank">Antrian Sorong</a>
-                        <a class="collapse-item" href="/merauke">Antrian Merauke</a>
-                        <a class="collapse-item" href="/ambon">Antrian Ambon</a>
-                        <a class="collapse-item" href="/ternate">Antrian Ternate</a>
-                        <a class="collapse-item" href="/morotai">Antrian Morotai</a>
+                        <a class="collapse-item" href="/merauke" target="_blank">Antrian Merauke</a>
+                        <a class="collapse-item" href="/ambon" target="_blank">Antrian Ambon</a>
+                        <a class="collapse-item" href="/ternate" target="_blank">Antrian Ternate</a>
+                        <a class="collapse-item" href="/morotai" target="_blank"git >Antrian Morotai</a>
                     </div>
                 </div>
 			</li>
