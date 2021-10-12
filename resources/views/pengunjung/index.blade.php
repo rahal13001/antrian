@@ -82,7 +82,7 @@
                   <h4>{{ $merauke }}<span> orang</span></h4>
                   
                   <div class="btn-wrap">
-                    <a href="#" class="btn-buy">Lihat Antrian</a>
+                    <a href="/merauke" class="btn-buy">Lihat Antrian</a>
                   </div>
                 </div>
               </div>
@@ -94,7 +94,7 @@
                   <h4>{{ $ambon }}<span> orang</span></h4>
                   
                   <div class="btn-wrap">
-                    <a href="#" class="btn-buy">Lihat Antrian</a>
+                    <a href="/ambon" class="btn-buy">Lihat Antrian</a>
                   </div>
                 </div>
               </div>
@@ -105,7 +105,7 @@
                   <h4>{{ $ternate }}<span> orang</span></h4>
                   
                   <div class="btn-wrap">
-                    <a href="#" class="btn-buy">Lihat Antrian</a>
+                    <a href="/ternate" class="btn-buy">Lihat Antrian</a>
                   </div>
                 </div>
               </div>
@@ -116,7 +116,7 @@
                   <h4>{{ $morotai }}<span> orang</span></h4>
                   
                   <div class="btn-wrap">
-                    <a href="#" class="btn-buy">Lihat Antrian</a>
+                    <a href="/morotai" class="btn-buy">Lihat Antrian</a>
                   </div>
                 </div>
               </div> 
