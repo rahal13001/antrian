@@ -117,7 +117,7 @@ class VisitorsController extends Controller
             }
             //Cek Hari Kerja
         } else {
-            if (date("H") > 23 && date("i") > 0) {
+            if (date("H") > 16 && date("i") > 0) {
                 return redirect()->back()->with('status', 'Pelayanan Sudah Tutup, Silahkan Isi Pada Hari dan Jam Kerja');
             } elseif (date("H") < 8) {
                 return redirect()->back()->with('status', 'Pelayanan Belum Buka, Silahkan Isi Pada Hari dan Jam Kerja');
