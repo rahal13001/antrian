@@ -1,7 +1,13 @@
 <?php
 
+use App\Http\Controllers\AktivitasambonController;
+use App\Http\Controllers\AktivitasmeraukeController;
+use App\Http\Controllers\AktivitasmorotaiController;
+use App\Http\Controllers\AktivitassorongController;
+use App\Http\Controllers\AktivitasternateController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\VisitorsController;
+use App\Http\Controllers\DisplayController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -46,16 +52,58 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 //display masing masing satker
-Route::get('/sorong', [VisitorsController::class, 'sorong'])->name('display_sorong');
-Route::get('/merauke', [VisitorsController::class, 'merauke'])->name('display_merauke');
-Route::get('/ambon', [VisitorsController::class, 'ambon'])->name('display_ambon');
-Route::get('/ternate', [VisitorsController::class, 'ternate'])->name('display_ternate');
-Route::get('/morotai', [VisitorsController::class, 'morotai'])->name('display_morotai');
+//Pelayanan, pengaduan, konsultasi di Sorong
+Route::put('/statussorong/{sorong}', [AktivitassorongController::class, 'status'])->name('status_sorong');
+Route::get('/pelayanansorong', [AktivitassorongController::class, 'pelayanan'])->name('pelayanan_sorong');
+Route::get('/pengaduansorong', [AktivitassorongController::class, 'pengaduan'])->name('pengaduan_sorong');
+Route::get('/konsultasisorong', [AktivitassorongController::class, 'konsultasi'])->name('konsultasi_sorong');
+
+//Pelayanan, pengaduan, konsultasi di Ambon
+Route::put('/statusambon/{ambon}', [AktivitasambonController::class, 'status'])->name('status_ambon');
+Route::get('/pelayananambon', [AktivitasambonController::class, 'pelayanan'])->name('pelayanan_ambon');
+Route::get('/pengaduanambon', [AktivitasambonController::class, 'pengaduan'])->name('pengaduan_ambon');
+Route::get('/konsultasiambon', [AktivitasambonController::class, 'konsultasi'])->name('konsultasi_ambon');
 
 
-//status ada atau ga pengantrinya
-Route::put('/status/{status}', [VisitorsController::class, 'status'])->name('status_update');
+//Pelayanan, pengaduan, konsultasi di Merauke
+Route::put('/statusmerauke/{merauke}', [AktivitasmeraukeController::class, 'status'])->name('status_merauke');
+Route::get('/pelayananmerauke', [AktivitasmeraukeController::class, 'pelayanan'])->name('pelayanan_merauke');
+Route::get('/pengaduanmerauke', [AktivitasmeraukeController::class, 'pengaduan'])->name('pengaduan_merauke');
+Route::get('/konsultasimerauke', [AktivitasmeraukeController::class, 'konsultasi'])->name('konsultasi_merauke');
+
+//Pelayanan, pengaduan, konsultasi di Ternate
+Route::put('/statusternate/{ternate}', [AktivitasternateController::class, 'status'])->name('status_ternate');
+Route::get('/pelayananternate', [AktivitasternateController::class, 'pelayanan'])->name('pelayanan_ternate');
+Route::get('/pengaduanternate', [AktivitasternateController::class, 'pengaduan'])->name('pengaduan_ternate');
+Route::get('/konsultasiternate', [AktivitasternateController::class, 'konsultasi'])->name('konsultasi_ternate');
+
+//
+Route::put('/statusmorotai/{morotai}', [AktivitasmorotaiController::class, 'status'])->name('status_morotai');
+Route::get('/pelayananmorotai', [AktivitasmorotaiController::class, 'pelayanan'])->name('pelayanan_morotai');
+Route::get('/pengaduanmorotai', [AktivitasmorotaiController::class, 'pengaduan'])->name('pengaduan_morotai');
+Route::get('/konsultasimorotai', [AktivitasmorotaiController::class, 'konsultasi'])->name('konsultasi_morotai');
+
+
+
+//Tampilan grid masing-masing antrian di masing-masing satker
+Route::get('/antriansorong', function () {
+    return view('pengunjung.displaysorong');
+});
+
+Route::get('/antrianambon', function () {
+    return view('pengunjung.displayambon');
+});
+
+Route::get('/antrianmerauke', function () {
+    return view('pengunjung.displaymerauke');
+});
+Route::get('/antrianternate', function () {
+    return view('pengunjung.displayternate');
+});
+Route::get('/antrianmorotai', function () {
+    return view('pengunjung.displaymorotai');
+});
 
 //autentikasi jadi ga bisa reset password dan register (mengamankan admin)
-Auth::routes(['register' => false, 'reset' => false]);
+Auth::routes(['reset' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

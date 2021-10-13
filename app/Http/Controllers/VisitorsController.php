@@ -49,7 +49,8 @@ class VisitorsController extends Controller
             'nama' => 'required',
             'no_hp' => 'required',
             'lokasi' => 'required',
-            'email' => 'email'
+            'email' => 'email',
+            'keperluan' => 'required'
         ]);
 
         $tanggal = date('Y-m-d');
@@ -58,12 +59,27 @@ class VisitorsController extends Controller
         $no_hp = $request->no_hp;
         $lokasi = $request->lokasi;
         $email = $request->email;
+        $keperluan = $request->keperluan;
 
-        $cek_data = Visitor::where(['tanggal' => $tanggal, 'lokasi' => $lokasi])->get();
+        //cek lokasi untuk kode
+        if ($lokasi == "Sorong") {
+            $kode = "SOQ";
+        } elseif ($lokasi == "Merauke") {
+            $kode = "MKQ";
+        } elseif ($lokasi == "Ambon") {
+            $kode = "AMQ";
+        } elseif ($lokasi == "Ternate") {
+            $kode = "TTQ";
+        } else {
+            $kode = "OTI";
+        }
+
+        //perhatikan jumlah data berdasarkan tanggal, lokasi dan keperluan
+        $cek_data = Visitor::where(['tanggal' => $tanggal, 'lokasi' => $lokasi, 'keperluan' => $keperluan])->get();
         $hitung = $cek_data->count();
 
         if ($hitung > 0) {
-            $urutan = Visitor::where(['tanggal' => $tanggal, 'lokasi' => $lokasi])->latest('no_urut')->limit(1)->get('no_urut');
+            $urutan = Visitor::where(['tanggal' => $tanggal, 'lokasi' => $lokasi, 'keperluan' => $keperluan])->latest('no_urut')->limit(1)->get('no_urut');
             foreach ($urutan as $urut) {
                 $norut = $urut->no_urut;
             }
@@ -71,6 +87,9 @@ class VisitorsController extends Controller
         } else {
             $no_urut = $hitung + 1;
         }
+
+        //display nomor urut
+        $display_urut = sprintf("%03s", $no_urut);
 
         //Cek Hari Libur
         if (date("D") === "Sun" || date("D") === "Sat") {
@@ -90,14 +109,15 @@ class VisitorsController extends Controller
                     'nama' => $nama,
                     'lokasi' => $lokasi,
                     'jam' => $jam,
-                    'email' => $email
+                    'email' => $email,
+                    'keperluan' => $keperluan
                 ]);
 
-                return view('pengunjung.nomorantrian', compact('jam', 'nama', 'tanggal', 'no_urut', 'lokasi'));
+                return view('pengunjung.nomorantrian', compact('jam', 'nama', 'tanggal', 'no_urut', 'lokasi', 'keperluan', 'kode', 'display_urut'));
             }
             //Cek Hari Kerja
         } else {
-            if (date("H") > 16 && date("i") > 0) {
+            if (date("H") > 23 && date("i") > 0) {
                 return redirect()->back()->with('status', 'Pelayanan Sudah Tutup, Silahkan Isi Pada Hari dan Jam Kerja');
             } elseif (date("H") < 8) {
                 return redirect()->back()->with('status', 'Pelayanan Belum Buka, Silahkan Isi Pada Hari dan Jam Kerja');
@@ -109,10 +129,11 @@ class VisitorsController extends Controller
                     'nama' => $nama,
                     'lokasi' => $lokasi,
                     'jam' => $jam,
-                    'email' => $email
+                    'email' => $email,
+                    'keperluan' => $keperluan
                 ]);
 
-                return view('pengunjung.nomorantrian', compact('jam', 'nama', 'tanggal', 'no_urut', 'lokasi'));
+                return view('pengunjung.nomorantrian', compact('jam', 'nama', 'tanggal', 'no_urut', 'lokasi', 'keperluan', 'kode', 'display_urut'));
             }
         }
     }
@@ -162,253 +183,7 @@ class VisitorsController extends Controller
         //
     }
 
-    public function status(Request $request)
-    {
 
-        $ada = $request->ada;
-        $tidak_ada = $request->tidak_ada;
-
-        $visitor = new Visitor();
-        if ($ada == 1) {
-            $visitor->where(['id' => $request->id])->update([
-                'status' => 'Ada',
-            ]);
-            return redirect()->route('display_sorong');
-        } else {
-            $visitor->where(['id' => $request->id])->update([
-                'status' => 'Tidak Ada',
-            ]);
-            return redirect()->route('display_sorong');
-        }
-    }
-
-
-    public function sorong(Visitor $visitor)
-    {
-        //Tanggal hari ini
-        $tgl = date("Y-m-d");
-
-        //cek data yang mengantri
-        $data = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'sorong', 'status' => 'antri']);
-        //mengambil antrian pertama
-        $antrian = $data->first();
-        //menghituung jumlah antrian
-        $cekdata = $data->count();
-
-        //melihat apakah ada lagi yang sedang mengantri
-        if ($cekdata > 0) {
-            $count = $data->orderBy('no_urut', 'ASC')->limit(1)->get();
-            foreach ($count as $ljt) {
-                $jut = $ljt->id;
-            }
-        } else {
-            $jut = 0;
-        }
-        //mengambil nomor urut terendah yang sedang ditampilkan
-
-        //melihat pengantri selain yang sedang ditampilkan
-        $tes = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'sorong', 'status' => 'antri'])->whereNotIn('id', [$jut]);
-        //menghitung jumlah pengantri yang belum ditampilkan namanya
-        $call = $tes->count();
-
-        //melihat siapa yang akan dipanggil
-        $selanjutnya = $tes->orderBy('no_urut', 'ASC')->limit(1)->get('no_urut');
-        //mengambil nomor urut orang yang akan diambil
-        foreach ($selanjutnya as $lanjut) {
-            $kemudian = $lanjut->no_urut;
-        }
-        //cek apakah ada antrian selanjutnyya atau tidak
-        if ($call == 0) {
-            //jika tidak ada pengantri
-            $next = "Tidak ada";
-        } else {
-            //jika ada pengantri lalu tampilkan nomor urut yang akan dipanggil
-            $next = 'Nomor : Sorong ' . $kemudian;
-        }
-        return view('pengunjung.displaysorong', compact('antrian', 'cekdata', 'next'));
-    }
-
-    public function merauke(Visitor $visitor)
-    {
-        //Tanggal hari ini
-        $tgl = date("Y-m-d");
-
-        //cek data yang mengantri
-        $data = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'merauke', 'status' => 'antri']);
-        //mengambil antrian pertama
-        $antrian = $data->first();
-        //menghituung jumlah antrian
-        $cekdata = $data->count();
-
-        //melihat apakah ada lagi yang sedang mengantri
-        if ($cekdata > 0) {
-            $count = $data->orderBy('no_urut', 'ASC')->limit(1)->get();
-            foreach ($count as $ljt) {
-                $jut = $ljt->id;
-            }
-        } else {
-            $jut = 0;
-        }
-        //mengambil nomor urut terendah yang sedang ditampilkan
-
-        //melihat pengantri selain yang sedang ditampilkan
-        $tes = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'merauke', 'status' => 'antri'])->whereNotIn('id', [$jut]);
-        //menghitung jumlah pengantri yang belum ditampilkan namanya
-        $call = $tes->count();
-
-        //melihat siapa yang akan dipanggil
-        $selanjutnya = $tes->orderBy('no_urut', 'ASC')->limit(1)->get('no_urut');
-        //mengambil nomor urut orang yang akan diambil
-        foreach ($selanjutnya as $lanjut) {
-            $kemudian = $lanjut->no_urut;
-        }
-        //cek apakah ada antrian selanjutnyya atau tidak
-        if ($call == 0) {
-            //jika tidak ada pengantri
-            $next = "Tidak ada";
-        } else {
-            //jika ada pengantri lalu tampilkan nomor urut yang akan dipanggil
-            $next = 'Nomor : Sorong ' . $kemudian;
-        }
-        return view('pengunjung.displaymerauke', compact('antrian', 'cekdata', 'next'));
-    }
-
-    public function ambon(Visitor $visitor)
-    {
-        //Tanggal hari ini
-        $tgl = date("Y-m-d");
-
-        //cek data yang mengantri
-        $data = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ambon', 'status' => 'antri']);
-        //mengambil antrian pertama
-        $antrian = $data->first();
-        //menghituung jumlah antrian
-        $cekdata = $data->count();
-
-        //melihat apakah ada lagi yang sedang mengantri
-        if ($cekdata > 0) {
-            $count = $data->orderBy('no_urut', 'ASC')->limit(1)->get();
-            foreach ($count as $ljt) {
-                $jut = $ljt->id;
-            }
-        } else {
-            $jut = 0;
-        }
-        //mengambil nomor urut terendah yang sedang ditampilkan
-
-        //melihat pengantri selain yang sedang ditampilkan
-        $tes = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ambon', 'status' => 'antri'])->whereNotIn('id', [$jut]);
-        //menghitung jumlah pengantri yang belum ditampilkan namanya
-        $call = $tes->count();
-
-        //melihat siapa yang akan dipanggil
-        $selanjutnya = $tes->orderBy('no_urut', 'ASC')->limit(1)->get('no_urut');
-        //mengambil nomor urut orang yang akan diambil
-        foreach ($selanjutnya as $lanjut) {
-            $kemudian = $lanjut->no_urut;
-        }
-        //cek apakah ada antrian selanjutnyya atau tidak
-        if ($call == 0) {
-            //jika tidak ada pengantri
-            $next = "Tidak ada";
-        } else {
-            //jika ada pengantri lalu tampilkan nomor urut yang akan dipanggil
-            $next = 'Nomor : Sorong ' . $kemudian;
-        }
-        return view('pengunjung.displayambon', compact('antrian', 'cekdata', 'next'));
-    }
-
-
-    public function ternate(Visitor $visitor)
-    {
-        //Tanggal hari ini
-        $tgl = date("Y-m-d");
-
-        //cek data yang mengantri
-        $data = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ternate', 'status' => 'antri']);
-        //mengambil antrian pertama
-        $antrian = $data->first();
-        //menghituung jumlah antrian
-        $cekdata = $data->count();
-
-        //melihat apakah ada lagi yang sedang mengantri
-        if ($cekdata > 0) {
-            $count = $data->orderBy('no_urut', 'ASC')->limit(1)->get();
-            foreach ($count as $ljt) {
-                $jut = $ljt->id;
-            }
-        } else {
-            $jut = 0;
-        }
-        //mengambil nomor urut terendah yang sedang ditampilkan
-
-        //melihat pengantri selain yang sedang ditampilkan
-        $tes = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ternate', 'status' => 'antri'])->whereNotIn('id', [$jut]);
-        //menghitung jumlah pengantri yang belum ditampilkan namanya
-        $call = $tes->count();
-
-        //melihat siapa yang akan dipanggil
-        $selanjutnya = $tes->orderBy('no_urut', 'ASC')->limit(1)->get('no_urut');
-        //mengambil nomor urut orang yang akan diambil
-        foreach ($selanjutnya as $lanjut) {
-            $kemudian = $lanjut->no_urut;
-        }
-        //cek apakah ada antrian selanjutnyya atau tidak
-        if ($call == 0) {
-            //jika tidak ada pengantri
-            $next = "Tidak ada";
-        } else {
-            //jika ada pengantri lalu tampilkan nomor urut yang akan dipanggil
-            $next = 'Nomor : Sorong ' . $kemudian;
-        }
-        return view('pengunjung.displayternate', compact('antrian', 'cekdata', 'next'));
-    }
-
-
-    public function morotai(Visitor $visitor)
-    {
-        //Tanggal hari ini
-        $tgl = date("Y-m-d");
-
-        //cek data yang mengantri
-        $data = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ambon', 'status' => 'antri']);
-        //mengambil antrian pertama
-        $antrian = $data->first();
-        //menghituung jumlah antrian
-        $cekdata = $data->count();
-
-        //melihat apakah ada lagi yang sedang mengantri
-        if ($cekdata > 0) {
-            $count = $data->orderBy('no_urut', 'ASC')->limit(1)->get();
-            foreach ($count as $ljt) {
-                $jut = $ljt->id;
-            }
-        } else {
-            $jut = 0;
-        }
-        //mengambil nomor urut terendah yang sedang ditampilkan
-
-        //melihat pengantri selain yang sedang ditampilkan
-        $tes = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ambon', 'status' => 'antri'])->whereNotIn('id', [$jut]);
-        //menghitung jumlah pengantri yang belum ditampilkan namanya
-        $call = $tes->count();
-
-        //melihat siapa yang akan dipanggil
-        $selanjutnya = $tes->orderBy('no_urut', 'ASC')->limit(1)->get('no_urut');
-        //mengambil nomor urut orang yang akan diambil
-        foreach ($selanjutnya as $lanjut) {
-            $kemudian = $lanjut->no_urut;
-        }
-        //cek apakah ada antrian selanjutnyya atau tidak
-        if ($call == 0) {
-            //jika tidak ada pengantri
-            $next = "Tidak ada";
-        } else {
-            //jika ada pengantri lalu tampilkan nomor urut yang akan dipanggil
-            $next = 'Nomor : Sorong ' . $kemudian;
-        }
-        return view('pengunjung.displaymorotai', compact('antrian', 'cekdata', 'next'));
-    }
 
 
     public function exportpdf(Request $request)
@@ -418,11 +193,12 @@ class VisitorsController extends Controller
         $no_urut = $request->no_urut;
         $tanggal = $request->tanggal;
         $jam = $request->jam;
-        $lokasi = $request->lokasi;
+        $keperluan = $request->keperluan;
+        $kode = $request->kode;
 
 
 
-        $pdf = PDF::loadView('kartu.kartu', compact('nama', 'no_urut', 'tanggal', 'jam', 'lokasi'))->setPaper('a5', 'landscape');
+        $pdf = PDF::loadView('kartu.kartu', compact('nama', 'no_urut', 'tanggal', 'jam', 'keperluan', 'kode'))->setPaper('a5', 'landscape');
         return $pdf->download('kartuantrian.pdf');
     }
 }

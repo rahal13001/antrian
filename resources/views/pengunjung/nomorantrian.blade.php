@@ -15,14 +15,15 @@
                         <article class="entry">                   
                             <h1 class="text-center">Nomor Antrian : </h1>
                             <br>
-                            <h1 class="text-center">{{ $lokasi }} {{ $no_urut }}</h1> <br>
+                            <h1 class="text-center">{{ $keperluan }} {{ $kode }} {{ $display_urut }}</h1> <br>
                             <h3 class="text-center">Nama : {{ $nama }}</h3>
                             
-                            <input type="hidden" name="no_urut" value="{{ $no_urut }}">
-                            <input type="hidden" name="lokasi" value="{{ $lokasi }}">
+                            <input type="hidden" name="no_urut" value="{{ $display_urut }}">
+                            <input type="hidden" name="keperluan" value="{{ $keperluan }}">
                             <input type="hidden" name="nama" value="{{ $nama }}">
                             <input type="hidden" name="tanggal" value="{{ $tanggal }}">
                             <input type="hidden" name="jam" value="{{ $jam }}">
+                            <input type="hidden" name="kode" value="{{ $kode }}">
                             <div class="container mt-3 text-center">
                                 <button class="btn btn-primary" type="submit">Cetak Kartu</button>
                             </div>

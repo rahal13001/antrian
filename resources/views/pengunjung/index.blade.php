@@ -35,7 +35,7 @@
             <div class="form-group mt-3">
                 <label for="lokasi">Lokasi</label>
                 <select class="form-select @error('lokasi') is-invalid @enderror" aria-label="lokasi" name="lokasi">
-                    <option selected value="{{ old('lokasi') }}">Pilih Lokasi</option>
+                    <option selected value="{{ old('lokasi') }}">{{ old('lokasi') }}</option>
                     <option value="Sorong">Sorong</option>
                     <option value="Ambon">Ambon</option>
                     <option value="Ternate">Ternate</option>
@@ -44,6 +44,17 @@
             </select>
             @error('lokasi') <div class="invalid-feedback"> {{ $message }} </div> @enderror
             </div>
+
+            <div class="form-group mt-3">
+              <label for="keperluan">Keperluan</label>
+              <select class="form-select @error('keperluan') is-invalid @enderror" aria-label="keperluan" name="keperluan">
+                  <option selected value="{{ old('keperluan') }}">{{ old('keperluan') }}</option>
+                  <option value="Pelayanan">Pelayanan</option>
+                  <option value="Pengaduan">Pengaduan</option>
+                  <option value="Konsultasi">Konsultasi</option>
+          </select>
+          @error('keperluan') <div class="invalid-feedback"> {{ $message }} </div> @enderror
+          </div>
 
             <div class="form-group mt-3">
                 <label for="email">Email</label>

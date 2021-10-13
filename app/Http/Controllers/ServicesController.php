@@ -87,6 +87,7 @@ class ServicesController extends Controller
             'no_hp' => 'required',
             'lokasi' => 'required',
             'status' => 'required',
+            'keperluan' => 'required'
         ]);
 
         $tanggal = $request->tanggal;
@@ -95,6 +96,7 @@ class ServicesController extends Controller
         $no_hp = $request->no_hp;
         $lokasi = $request->lokasi;
         $email = $request->email;
+        $keperluan = $request->keperluan;
 
         if ($request->no_urut == null) {
             $cek_data = Visitor::where(['tanggal' => $tanggal, 'lokasi' => $lokasi])->get();
@@ -120,7 +122,8 @@ class ServicesController extends Controller
             'nama' => $nama,
             'lokasi' => $lokasi,
             'jam' => $jam,
-            'email' => $email
+            'email' => $email,
+            'keperluan' => $keperluan
         ]);
         return redirect('/dashboard')->with('status', 'Data Tamu Berhasil Ditambah');
     }
@@ -163,6 +166,7 @@ class ServicesController extends Controller
             'no_hp' => 'required',
             'lokasi' => 'required',
             'status' => 'required',
+            'keperluan' => 'required'
         ]);
 
         Visitor::where('id', $visitor->id)
@@ -174,6 +178,7 @@ class ServicesController extends Controller
                 'email' => $request->email,
                 'jam' => $request->jam,
                 'lokasi' => $request->lokasi,
+                'keperluan' => $request->keperluan
             ]);
         return redirect('/dashboard')->with('status', 'Data Pengantri Berhasil Diubah');
     }

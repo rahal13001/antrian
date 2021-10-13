@@ -31,25 +31,26 @@ class VisitorsExport implements FromQuery, WithHeadings, WithStyles, WithColumnW
             if ($this->from_date === $this->to_date) {
                 $data = DB::table('visitors')
                     ->where('tanggal', '=', $this->to_date)
-                    ->select('no_urut', 'lokasi', 'tanggal', 'jam',  'nama', 'no_hp',  'email', 'status')->orderBy('tanggal');
+                    ->select('tanggal', 'lokasi', 'no_urut', 'jam', 'keperluan', 'nama', 'no_hp',  'email', 'status')->orderBy('tanggal');
             } else {
                 $data = DB::table('visitors')
                     ->whereBetween('tanggal', [$this->from_date, $this->to_date])
-                    ->select('no_urut', 'lokasi', 'tanggal', 'jam',  'nama', 'no_hp',  'email', 'status')->orderBy('tanggal');
+                    ->select('tanggal', 'lokasi', 'no_urut', 'jam', 'keperluan', 'nama', 'no_hp',  'email', 'status')->orderBy('tanggal');
             }  // return Book::query()->whereBetween('tanggal', [$this->from_date, $this->to_date]);
         } else {
             $data =  DB::table('visitors')
-                ->select('no_urut', 'lokasi', 'tanggal', 'jam',  'nama', 'no_hp',  'email', 'status')->orderBy('tanggal');
+                ->select('tanggal', 'lokasi', 'no_urut', 'jam', 'keperluan', 'nama', 'no_hp',  'email', 'status')->orderBy('tanggal');
         }
         return $data;
     }
     public function headings(): array
     {
         return [
-            'Nomor Urut',
-            'Lokasi',
             'Tanggal',
+            'Lokasi',
+            'Nomor Urut',
             'Jam',
+            'Keperluan',
             'Nama',
             'Nomor HP',
             'Email',
@@ -67,14 +68,15 @@ class VisitorsExport implements FromQuery, WithHeadings, WithStyles, WithColumnW
     public function columnWidths(): array
     {
         return [
-            'A' => 10,
+            'A' => 15,
             'B' => 12,
-            'C' => 25,
-            'D' => 25,
-            'E' => 45,
-            'F' => 45,
-            'G' => 45,
-            'H' => 15,
+            'C' => 10,
+            'D' => 15,
+            'E' => 15,
+            'F' => 35,
+            'G' => 20,
+            'H' => 35,
+            'I' => 15,
         ];
     }
 }
