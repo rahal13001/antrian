@@ -105,5 +105,5 @@ Route::get('/antrianmorotai', function () {
 });
 
 //autentikasi jadi ga bisa reset password dan register (mengamankan admin)
-Auth::routes(['reset' => false]);
+Auth::routes(['register' => false, 'reset' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

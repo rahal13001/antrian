@@ -4,10 +4,19 @@
 
 @section('isi')
     
-<div class="container mt-5">
+<div class="container mt-3">
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Daftar Antrian</h2>
+      </div>
+
+    </div>
+  </section>
+  
     <section class="about">
        
-        
         @if (session('status'))
             <div class="mt-2">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -15,9 +24,26 @@
                 </div>
             </div>
         @endif
+      
+        <section id="team" class="team ">
+          <div class="container">
     
-
-      <h3 class="mt-2"><span>Daftar Antrian</span></h3>
+            <div class="row">
+    
+              <div class="col-lg-12">
+                <div class="member">
+                  
+                  <div class="member-info">
+                    <h4>Petunjuk Singkat</h4>
+                    <span>Pengguna layanan dari Provinsi Papua Barat mengambil lokasi antrian di Sorong</span>
+                    <span>Pengguna layanan dari Provinsi Papua mengambil lokasi antrian di Merauke</span>
+                    <span>Pengguna layanan dari Provinsi Maluku mengambil lokasi antrian di Ambon</span>
+                    <span>Pengguna layanan dari Provinsi Maluku Utara mengambil lokasi antrian di Ternate</span>
+                  </div>
+                </div>
+              </div>
+       
+      
         <form action="{{ route('vis_store') }}" method="post" class="user mt-n2">
             @csrf
             <div class="form-group mt-3">
@@ -39,7 +65,7 @@
                     <option value="Sorong">Sorong</option>
                     <option value="Ambon">Ambon</option>
                     <option value="Ternate">Ternate</option>
-                    <option value="Morotai">Morotai</option>
+                    {{-- <option value="Morotai">Morotai</option> --}}
                     <option value="Merauke">Merauke</option>
             </select>
             @error('lokasi') <div class="invalid-feedback"> {{ $message }} </div> @enderror
@@ -120,7 +146,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-2 col-md-6 mt-4 mt-md-0">
+              {{-- <div class="col-lg-2 col-md-6 mt-4 mt-md-0">
                 <div class="box featured">
                   <h3>Morotai</h3>
                   <h5>Jumlah Penunggu :</h5>
@@ -130,7 +156,7 @@
                     <a href="/antrianmorotai" class="btn-buy" target="_blank">Lihat Antrian</a>
                   </div>
                 </div>
-              </div> 
+              </div>  --}}
            
 
   

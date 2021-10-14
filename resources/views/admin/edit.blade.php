@@ -51,13 +51,13 @@
                         <option value="Merauke">Merauke</option>
                         <option value="Ambon">Ambon</option>
                         <option value="Ternate">Ternate</option>
-                        <option value="Morotai">Morotai</option>
+                        {{-- <option value="Morotai">Morotai</option> --}}
                       </select>
                       @error('lokasi') <div class="invalid-feedback"> {{ $message }} </div> @enderror
                     </div>
 
                     <div class="form-group mt-3">
-                      <label for="keperluan">Lokasi</label>
+                      <label for="keperluan">Keperluan</label>
                       <select class="form-control form-select @error('keperluan') is-invalid @enderror" aria-label="keperluan" name="keperluan">
                           <option selected value="{{ $visitor->keperluan }}">{{ $visitor->keperluan }}</option>
                           <option value="antri">antri</option>
