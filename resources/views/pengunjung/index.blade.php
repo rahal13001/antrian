@@ -35,7 +35,7 @@
                   
                   <div class="member-info">
                     <h4>Petunjuk Singkat</h4>
-                    <span>Pengguna layanan dari Provinsi Papua Barat mengambil lokasi antrian di Sorong</span>
+                    <span>Pengguna layanan dari Provinsi Papua Barat mengambil lokasi antrian di Sorong </span>
                     <span>Pengguna layanan dari Provinsi Papua mengambil lokasi antrian di Merauke</span>
                     <span>Pengguna layanan dari Provinsi Maluku mengambil lokasi antrian di Ambon</span>
                     <span>Pengguna layanan dari Provinsi Maluku Utara mengambil lokasi antrian di Ternate</span>
@@ -100,7 +100,7 @@
   
           <div class="row d-flex justify-content-center animate__animated animate__fadeInDown mt-2">
   
-            <div class="col-lg-2 col-md-6 mt-4 mt-md-0">
+            <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
                 <div class="box featured">
                   <h3>Sorong</h3>
                   <h5>Jumlah Penunggu :</h5>
@@ -112,7 +112,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-2 col-md-6 mt-4 mt-md-0">
+              <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
                 <div class="box featured">
                   <h3>Merauke</h3>
                   <h5>Jumlah Penunggu :</h5>
@@ -124,7 +124,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-2 col-md-6 mt-4 mt-md-0">
+              <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
                 <div class="box featured">
                   <h3>Ambon</h3>
                   <h5>Jumlah Penunggu :</h5>
@@ -135,7 +135,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-2 col-md-6 mt-4 mt-md-0">
+              <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
                 <div class="box featured">
                   <h3>Ternate</h3>
                   <h5>Jumlah Penunggu :</h5>
@@ -161,9 +161,27 @@
 
   
           </div>
-  
         </div>
       </section><!-- End Pricing Section -->
+
+      <section id="testimonials" class="testimonials">
+        <div class="container">
+          <div class="col-lg-12 text-center mt-2">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Rata-rata orang menghabiskan waktu 2 tahun bahkan 5 tahun usia hidupnya untuk mengantri (R Larson, MIT, 2011)
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <p> LPSPL Sorong hadirkan inovasi dalam memberi layanan tanpa banyak membuang waktu untuk mengantri</p>
+              bagi kami <strong> anda begitu istimewa dan waktu anda sangat berharga </strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
 </div>
 
 @endsection

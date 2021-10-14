@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('judul', 'Antrian Ambon')
+@section('judul', 'Antrian Merauke')
 
 @section('isi')
 

@@ -67,7 +67,7 @@
 
                         <p class="text-center">Klik refresh untuk update data</p>
                         <div class="col text-center">
-                        <a href="/pelayananmorotai" class="btn btn-danger text-center">Refresh</a>
+                        <a href="/pelayanansorong" class="btn btn-danger text-center">Refresh</a>
                         @guest
                         <a class="btn btn-primary float" href="{{ route('index') }}" target="_blank">Daftar Untuk Mengantri</a> 
                         @endguest
@@ -89,14 +89,14 @@
                     @guest
                     <p class="text-center">Klik refresh untuk update data</p>
                     <div class="col text-center">
-                    <a href="/pelayananmorotai" class="btn btn-danger text-center">Refresh</a>
+                    <a href="/pelayanansorong" class="btn btn-danger text-center">Refresh</a>
                     <div class="container mt-3 text-center">
                         <a class="btn btn-primary" href="{{ route('index') }}" target="_blank">Daftar Untuk Mengantri</a>
                     </div>
                     @endguest
                         
                     @auth
-                    <form action="{{ route('status_morotai', $antrian->id) }}" method="POST">
+                    <form action="{{ route('status_sorong', $antrian->id) }}" method="POST">
                         @method('put')
                         @csrf
                             <input type="hidden" value="{{ $antrian->id }}" name="id">
@@ -108,7 +108,7 @@
                         </form>
                   
                     <div class="container mt-3 text-center">
-                        <textarea id="my_text" cols="100" class="form-control">Nomor. Antrian. Pelayanan. OTI. {{$antrian->no_urut }}</textarea>
+                        <textarea id="my_text" cols="100" class="form-control">Nomor. Antrian. Pelayanan. SOQ. {{$antrian->no_urut }}</textarea>
                         <br>
                         <button onclick="play();" class="btn btn-outline-primary"><i class="bi bi-play-circle-fill"></i></button>
                         <button onclick="stop();" class="btn btn-outline-danger"><i class="bi bi-stop-circle-fill"></i></button>
