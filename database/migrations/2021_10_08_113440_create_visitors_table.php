@@ -23,7 +23,7 @@ class CreateVisitorsTable extends Migration
             $table->date('tanggal');
             $table->time('jam');
             $table->string('status', 10)->default('antri')->nullable();
-            $table->string('keperluan', 20);
+            $table->string('keperluan', 35);
             $table->timestamps();
         });
     }

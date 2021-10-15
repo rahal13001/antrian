@@ -54,34 +54,39 @@ Route::group(['middleware' => 'auth'], function () {
 //display masing masing satker
 //Pelayanan, pengaduan, konsultasi di Sorong
 Route::put('/statussorong/{sorong}', [AktivitassorongController::class, 'status'])->name('status_sorong');
+Route::get('/pemanfaatanjenisikansorong', [AktivitassorongController::class, 'pemanfaatanjenisikan'])
+    ->name('pemanfaatanjenisikan_sorong');
 Route::get('/pelayanansorong', [AktivitassorongController::class, 'pelayanan'])->name('pelayanan_sorong');
 Route::get('/pengaduansorong', [AktivitassorongController::class, 'pengaduan'])->name('pengaduan_sorong');
 Route::get('/konsultasisorong', [AktivitassorongController::class, 'konsultasi'])->name('konsultasi_sorong');
 
 //Pelayanan, pengaduan, konsultasi di Ambon
 Route::put('/statusambon/{ambon}', [AktivitasambonController::class, 'status'])->name('status_ambon');
-Route::get('/pelayananambon', [AktivitasambonController::class, 'pelayanan'])->name('pelayanan_ambon');
+Route::get('/pemanfaatanjenisikanambon', [AktivitasambonController::class, 'pemanfaatanjenisikan'])
+    ->name('pemanfaatanjenisikan_ambon');
 Route::get('/pengaduanambon', [AktivitasambonController::class, 'pengaduan'])->name('pengaduan_ambon');
 Route::get('/konsultasiambon', [AktivitasambonController::class, 'konsultasi'])->name('konsultasi_ambon');
 
 
 //Pelayanan, pengaduan, konsultasi di Merauke
 Route::put('/statusmerauke/{merauke}', [AktivitasmeraukeController::class, 'status'])->name('status_merauke');
-Route::get('/pelayananmerauke', [AktivitasmeraukeController::class, 'pelayanan'])->name('pelayanan_merauke');
+Route::get('/pemanfaatanjenisikanmerauke', [AktivitasmeraukeController::class, 'pemanfaatanjenisikan'])
+    ->name('pemanfaatanjenisikan_merauke');
 Route::get('/pengaduanmerauke', [AktivitasmeraukeController::class, 'pengaduan'])->name('pengaduan_merauke');
 Route::get('/konsultasimerauke', [AktivitasmeraukeController::class, 'konsultasi'])->name('konsultasi_merauke');
 
 //Pelayanan, pengaduan, konsultasi di Ternate
 Route::put('/statusternate/{ternate}', [AktivitasternateController::class, 'status'])->name('status_ternate');
-Route::get('/pelayananternate', [AktivitasternateController::class, 'pelayanan'])->name('pelayanan_ternate');
+Route::get('/pemanfaatanjenisikanternate', [AktivitasternateController::class, 'pemanfaatanjenisikan'])
+    ->name('pemanfaatanjenisikan_ternate');
 Route::get('/pengaduanternate', [AktivitasternateController::class, 'pengaduan'])->name('pengaduan_ternate');
 Route::get('/konsultasiternate', [AktivitasternateController::class, 'konsultasi'])->name('konsultasi_ternate');
 
 //
-Route::put('/statusmorotai/{morotai}', [AktivitasmorotaiController::class, 'status'])->name('status_morotai');
-Route::get('/pelayananmorotai', [AktivitasmorotaiController::class, 'pelayanan'])->name('pelayanan_morotai');
-Route::get('/pengaduanmorotai', [AktivitasmorotaiController::class, 'pengaduan'])->name('pengaduan_morotai');
-Route::get('/konsultasimorotai', [AktivitasmorotaiController::class, 'konsultasi'])->name('konsultasi_morotai');
+// Route::put('/statusmorotai/{morotai}', [AktivitasmorotaiController::class, 'status'])->name('status_morotai');
+// Route::get('/pelayananmorotai', [AktivitasmorotaiController::class, 'pelayanan'])->name('pelayanan_morotai');
+// Route::get('/pengaduanmorotai', [AktivitasmorotaiController::class, 'pengaduan'])->name('pengaduan_morotai');
+// Route::get('/konsultasimorotai', [AktivitasmorotaiController::class, 'konsultasi'])->name('konsultasi_morotai');
 
 
 
@@ -105,5 +110,5 @@ Route::get('/antrianmorotai', function () {
 });
 
 //autentikasi jadi ga bisa reset password dan register (mengamankan admin)
-Auth::routes(['register' => false, 'reset' => false]);
+Auth::routes(['reset' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

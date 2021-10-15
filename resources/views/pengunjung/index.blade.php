@@ -39,7 +39,7 @@
                     <span>Pengguna layanan dari Provinsi Papua mengambil lokasi antrian di Merauke</span>
                     <span>Pengguna layanan dari Provinsi Maluku mengambil lokasi antrian di Ambon</span>
                     <span>Pengguna layanan dari Provinsi Maluku Utara mengambil lokasi antrian di Ternate</span>
-                    <span>Pelayanan meliputi registrasi pelaku usaha, penebitan surat rekomendasi atau surat keterangan ketelusuran, BAP verifikasi lapangan SIPJI dan Penerbitan SAJI DN</span>
+                    <span>Pelayanan pemanfaatan jenis ikan meliputi registrasi pelaku usaha, verifikasi lapangan pengurusan SIPJI, Surat Rekomendasi dan Surat Angkut Jenis Ikan</span>
                   </div>
                 </div>
               </div>
@@ -76,9 +76,9 @@
               <label for="keperluan">Keperluan</label>
               <select class="form-select @error('keperluan') is-invalid @enderror" aria-label="keperluan" name="keperluan">
                   <option selected value="{{ old('keperluan') }}">{{ old('keperluan') }}</option>
-                  <option value="Pelayanan">Pelayanan (Regis Pelaku Usaha, Penerbitan SR/SKK, BAP Verifikasi Lapangan SIPJI & Penerbitan SAJI DN)</option>
-                  <option value="Pengaduan">Pengaduan</option>
-                  <option value="Konsultasi">Konsultasi</option>
+                  <option value="Pemanfatan Jenis Ikan">Pelayanan Pemanfaatan Jenis Ikan</option>
+                  <option value="Pengaduan">Pelayanan Pengaduan</option>
+                  <option value="Konsultasi">Pelayanan Konsultasi</option>
           </select>
           @error('keperluan') <div class="invalid-feedback"> {{ $message }} </div> @enderror
           </div>

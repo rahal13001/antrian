@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class AktivitassorongController extends Controller
 {
-    //merubah ada atau tidak ada pengunjung di Sorong
     public function status(Request $request)
     {
 
@@ -24,12 +23,12 @@ class AktivitassorongController extends Controller
             $visitor->where(['id' => $request->id])->update([
                 'status' => 'Ada',
             ]);
-            return redirect()->route('pelayanan_sorong');
+            return redirect()->route('pemanfaatanjenisikan_sorong');
         } elseif ($tidak_adapelayanan == 1) {
             $visitor->where(['id' => $request->id])->update([
                 'status' => 'Tidak Ada',
             ]);
-            return redirect()->route('pelayanan_sorong');
+            return redirect()->route('pemanfaatanjenisikan_sorong');
         } elseif ($adapengaduan == 1) {
             $visitor->where(['id' => $request->id])->update([
                 'status' => 'Ada',
@@ -53,13 +52,14 @@ class AktivitassorongController extends Controller
         }
     }
 
-    public function pelayanan(Visitor $visitor)
+    public function pemanfaatanjenisikan(Visitor $visitor)
     {
         //Tanggal hari ini
         $tgl = date("Y-m-d");
 
         //cek data yang mengantri
-        $data = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'sorong', 'status' => 'antri', 'keperluan' => 'pelayanan']);
+        $data = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'sorong', 'status' => 'antri', 'keperluan' => 'Pemanfatan Jenis Ikan']);
+
 
         //mengambil antrian pertama
         $antrian = $data->first();
@@ -70,7 +70,7 @@ class AktivitassorongController extends Controller
 
         //jika ada tampilkan jika tidak ada tulis tidak ada antrian
         if ($coba > 0) {
-            $display_urut = "Pelayanan SOQ " . sprintf("%03s", $antrian->no_urut);
+            $display_urut = "Pemanfaatan Jenis Ikan SOQ " . sprintf("%03s", $antrian->no_urut);
         } else {
             $display_urut = "Tidak Ada Antrian";
         }
@@ -90,7 +90,7 @@ class AktivitassorongController extends Controller
         //mengambil nomor urut terendah yang sedang ditampilkan
 
         //melihat pengantri selain yang sedang ditampilkan
-        $tes = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'sorong', 'status' => 'antri', 'keperluan' => 'pelayanan'])->whereNotIn('id', [$jut]);
+        $tes = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'sorong', 'status' => 'antri', 'keperluan' => 'Pemanfatan Jenis Ikan'])->whereNotIn('id', [$jut]);
         //menghitung jumlah pengantri yang belum ditampilkan namanya
         $call = $tes->count();
 
@@ -106,9 +106,9 @@ class AktivitassorongController extends Controller
             $next = "Tidak ada";
         } else {
             //jika ada pengantri lalu tampilkan nomor urut yang akan dipanggil
-            $next = 'Nomor : Pelayanan SOQ ' . sprintf("%03s", $kemudian);
+            $next = 'Nomor : Pemanfaatan Jenis Ikan SOQ ' . sprintf("%03s", $kemudian);
         }
-        return view('gabungan.sorong.pelayanan', compact('antrian', 'cekdata', 'next', 'display_urut'));
+        return view('gabungan.sorong.pemanfaatanjenisikan', compact('antrian', 'cekdata', 'next', 'display_urut'));
     }
 
     //Pengaduan Sorong

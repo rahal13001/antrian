@@ -88,16 +88,18 @@ class VisitorsController extends Controller
             $no_urut = $hitung + 1;
         }
 
+
+
         //display nomor urut
         $display_urut = sprintf("%03s", $no_urut);
 
         //Cek Hari Libur
-        if (date("D") === "Sun" || date("D") === "Sat") {
+        if (date("D") == "Sun" || date("D") == "Sat") {
             return redirect()->back()->with('status', 'Pelayanan Sedang Libur, Silahkan Isi Pada Hari dan Jam Kerja');
 
             //Cek Hari Jumat
-        } elseif (date("D") === "Fri") {
-            if (date("H") > 16 && date("i") > 30) {
+        } elseif (date("D") == "Fri") {
+            if (date("H") > 16 && date('i') > 030) {
                 return redirect()->back()->with('status', 'Pelayanan Sudah Tutup, Silahkan Isi Pada Hari dan Jam Kerja');
             } elseif (date("H") < 8) {
                 return redirect()->back()->with('status', 'Pelayanan Belum Buka, Silahkan Isi Pada Hari dan Jam Kerja');

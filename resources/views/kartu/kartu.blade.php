@@ -24,8 +24,8 @@
 
     <div class="container">
     <h3 class="antrian">Antrian Pelayanan LPSPL Sorong</h3>
-    <h3 class="nomor_antrian">NOMOR ANTRIAN :</h3>
-    <h1 class="no_urut">{{ $keperluan }} {{ $kode }} {{ $no_urut }}</h1>
+    <h2 class="nomor_antrian">NOMOR ANTRIAN :</h2>
+    <h3 class="no_urut">{{ $keperluan }} {{ $kode }} {{ $no_urut }}</h3>
     <h4 class="nama">Nama : {{ $nama }}</h4>
     <p class="waktu">Tanggal : {{ $tanggal}}  Jam : {{ $jam}} WIT</p>
     </div>
