@@ -39,17 +39,7 @@
                         <label for="tutup">Jam Tutup</label>
                           <input type="time" class="form-control @error('tutup') is-invalid @enderror" name="tutup" id="tutup" placeholder="Masukan Tanggal" value="{{  $schedule->tutup }}">
                           @error('tutup') <div class="invalid-feedback"> {{ $message }} </div> @enderror
-                        </div>
-                        <div class="form-group mt-3">
-                          <label for="keterangan">Keterangan</label>
-                          <select class="form-control form-select @error('keterangan') is-invalid @enderror" aria-label="keterangan" name="keterangan">
-                              <option selected value="{{ $schedule->keterangan }}">{{ $schedule->keterangan }}</option>
-                              <option value="antri">Buka</option>
-                              <option value="Ada">Tutup</option>
-                            </select>
-                            @error('keterangan') <div class="invalid-feedback"> {{ $message }} </div> @enderror
-                        </div>
-                      
+                        </div>                      
                         <button type="submit" class="btn btn-primary float-left">Edit</button>
             </form>
             <!-- Button trigger modal -->

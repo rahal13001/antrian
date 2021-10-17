@@ -94,8 +94,7 @@ class SchedulesController extends Controller
             'buka' => $data['buka'],
             'istirahat' => $data['istirahat'],
             'masuk' => $data['masuk'],
-            'tutup' => $data['tutup'],
-            'keterangan' => $data['keterangan'],
+            'tutup' => $data['tutup']
         ]);
         return redirect('/jamkerja')->with('status', 'Data Jam Kerja Berhasil Diedit');
     }
