@@ -66,9 +66,21 @@
             <!-- Nav Item - Pages Collapse Manajemen Pegawai -->
             
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="/dashboard">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     <span>Data Pengantri</span></a>
+			</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/jamkerja">
+                    <i class="fa fa-clock" aria-hidden="true"></i>
+                    <span>Jam Kerja</span></a>
+			</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/libur">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    <span>Jadwal Libur</span></a>
 			</li>
 
             <li class="nav-item">

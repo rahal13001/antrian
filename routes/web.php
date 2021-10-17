@@ -3,6 +3,10 @@
 use App\Http\Controllers\AktivitasambonController;
 use App\Http\Controllers\AktivitasmeraukeController;
 use App\Http\Controllers\AktivitasmorotaiController;
+use App\Http\Controllers\HolidaysController;
+use App\Http\Controllers\SchedulesController;
+
+
 use App\Http\Controllers\AktivitassorongController;
 use App\Http\Controllers\AktivitasternateController;
 use App\Http\Controllers\ServicesController;
@@ -47,9 +51,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/service/{visitor}', [ServicesController::class, 'update'])->name('admin_update');
     Route::delete('/service/{visitor}', [ServicesController::class, 'destroy'])->name('admin_delete');
     Route::get('/service/{service}', [ServicesController::class, 'show'])->name('admin_detail');
+
     //Excel
     Route::get('/visitors/exportexcel', [ServicesController::class, 'exportexcel'])->name('exportexcel');
+
+    //Liburan
+    Route::get('/libur', [HolidaysController::class, 'index'])->name('holiday_index');
+    Route::get('/libur/create', [HolidaysController::class, 'create'])->name('holiday_create');
+    Route::post('/libur', [HolidaysController::class, 'store'])->name('holiday_store');
+    Route::get('/libur/{holiday}/edit', [HolidaysController::class, 'edit'])->name('holiday_edit');
+    Route::put('/libur/{holiday}', [HolidaysController::class, 'update'])->name('holiday_update');
+    Route::delete('/libur/{holiday}', [HolidaysController::class, 'destroy'])->name('holiday_delete');
+
+    //Jam Kerja
+    Route::get('/jamkerja', [SchedulesController::class, 'index'])->name('schedule_index');
+    Route::get('/jamkerja/{schedule}/edit', [SchedulesController::class, 'edit'])->name('schedule_edit');
+    Route::put('/jamkerja/{schedule}', [SchedulesController::class, 'update'])->name('schedule_update');
 });
+
 
 //display masing masing satker
 //Pelayanan, pengaduan, konsultasi di Sorong
@@ -66,7 +85,6 @@ Route::get('/pemanfaatanjenisikanambon', [AktivitasambonController::class, 'pema
     ->name('pemanfaatanjenisikan_ambon');
 Route::get('/pengaduanambon', [AktivitasambonController::class, 'pengaduan'])->name('pengaduan_ambon');
 Route::get('/konsultasiambon', [AktivitasambonController::class, 'konsultasi'])->name('konsultasi_ambon');
-
 
 //Pelayanan, pengaduan, konsultasi di Merauke
 Route::put('/statusmerauke/{merauke}', [AktivitasmeraukeController::class, 'status'])->name('status_merauke');
@@ -89,7 +107,6 @@ Route::get('/konsultasiternate', [AktivitasternateController::class, 'konsultasi
 // Route::get('/konsultasimorotai', [AktivitasmorotaiController::class, 'konsultasi'])->name('konsultasi_morotai');
 
 
-
 //Tampilan grid masing-masing antrian di masing-masing satker
 Route::get('/antriansorong', function () {
     return view('pengunjung.displaysorong');
@@ -110,5 +127,5 @@ Route::get('/antrianmorotai', function () {
 });
 
 //autentikasi jadi ga bisa reset password dan register (mengamankan admin)
-Auth::routes(['reset' => false]);
+Auth::routes(['reset' => false, 'register' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

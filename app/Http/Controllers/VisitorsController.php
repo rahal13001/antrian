@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Holiday;
+use App\Models\Schedule;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\App;
+use Spatie\OpeningHours\OpeningHours;
+
 
 class VisitorsController extends Controller
 {
@@ -16,14 +22,40 @@ class VisitorsController extends Controller
      */
     public function index()
     {
-        $tgl = date("Y-m-d");
+        $tgl = date('Y-m-d');
 
+        //Mennampilkan jumlah pengantri secara umum
         $sorong = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'sorong', 'status' => 'antri'])->count();
         $ambon = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ambon', 'status' => 'antri'])->count();
         $merauke = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'merauke', 'status' => 'antri'])->count();
         $ternate = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ternate', 'status' => 'antri'])->count();
         $morotai = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'morotai', 'status' => 'antri'])->count();
 
+        //Melihat Jadwal Libur
+        $libur = Holiday::whereDate('mulai', '<=', $tgl)->whereDate('selesai', '>=', $tgl)->orderBy('mulai')->limit(1)->get();
+
+        //melihat hari ini libur atau ga
+        $ceklibur = $libur->count();
+        //eksekusi perintah jika libur
+        if ($ceklibur > 0) {
+            foreach ($libur as $holiday) {
+
+                $selesai = $holiday->selesai;
+                $keterangan = $holiday->keterangan;
+                //membuat jason menjadi array
+                $lokasi = json_decode($holiday->lokasi);
+            }
+
+            //menampilkan data json dari kolom lokasi
+            $lokasi = implode(" , ", $lokasi);
+            //tampilan tanggal supaya Indonesia Banget
+            $selesai = date('d-m-Y', strtotime($selesai));
+            //Kasih tau kalau kami lagi libur
+            $info = "Hari Ini Kami Di " . $lokasi . " Sedang Libur Sampai Tanggal " . $selesai . " Dalam Rangka " . $keterangan;
+            return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke', 'info'));
+        }
+
+        //ini kalau ga lagi libur
         return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke'));
     }
 
@@ -61,6 +93,24 @@ class VisitorsController extends Controller
         $email = $request->email;
         $keperluan = $request->keperluan;
 
+        //Melihat Jadwal Libur
+        $libur = Holiday::whereDate('mulai', '<=', $tanggal)->whereDate('selesai', '>=', $tanggal)->orderBy('mulai')->limit(1)->get();
+
+        //melihat hari ini libur atau ga
+        $ceklibur = $libur->count();
+
+        //melihat lokasi yang libur
+        foreach ($libur as $loks) {
+            $loklibur = json_decode($loks->lokasi);
+        }
+        //Jika hari libur
+        if ($ceklibur > 0) {
+            //Cek apakah lokasi yang dituju libur atau buka
+            if (in_array($lokasi, $loklibur)) {
+                return redirect()->back()->with('status', 'Pelayanan Sedang Libur, Silahkan Isi Pada Hari dan Jam Kerja');
+            }
+        }
+
         //cek lokasi untuk kode
         if ($lokasi == "Sorong") {
             $kode = "SOQ";
@@ -88,55 +138,121 @@ class VisitorsController extends Controller
             $no_urut = $hitung + 1;
         }
 
-
-
         //display nomor urut
         $display_urut = sprintf("%03s", $no_urut);
 
-        //Cek Hari Libur
-        if (date("D") == "Sun" || date("D") == "Sat") {
-            return redirect()->back()->with('status', 'Pelayanan Sedang Libur, Silahkan Isi Pada Hari dan Jam Kerja');
+        $monday = Schedule::where(['hari' => 'Senin'])->get();
+        foreach ($monday as $senin) {
+            $masuk_monday = date("H:i", strtotime($senin->masuk));
+            $istirahat_monday = date("H:i", strtotime($senin->istirahat));
+            $buka_monday = date("H:i", strtotime($senin->buka));
+            $tutup_monday = date("H:i", strtotime($senin->tutup));
+        }
 
-            //Cek Hari Jumat
-        } elseif (date("D") == "Fri") {
-            if (date("H") > 16 && date('i') > 030) {
-                return redirect()->back()->with('status', 'Pelayanan Sudah Tutup, Silahkan Isi Pada Hari dan Jam Kerja');
-            } elseif (date("H") < 8) {
-                return redirect()->back()->with('status', 'Pelayanan Belum Buka, Silahkan Isi Pada Hari dan Jam Kerja');
-            } else {
-                Visitor::create([
-                    'tanggal' => $tanggal,
-                    'no_urut' => $no_urut,
-                    'no_hp' => $no_hp,
-                    'nama' => $nama,
-                    'lokasi' => $lokasi,
-                    'jam' => $jam,
-                    'email' => $email,
-                    'keperluan' => $keperluan
-                ]);
+        $tuesday = Schedule::where(['hari' => 'Selasa'])->get();
+        foreach ($tuesday as $selasa) {
+            $masuk_tuesday = date("H:i", strtotime($selasa->masuk));
+            $istirahat_tuesday = date("H:i", strtotime($selasa->istirahat));
+            $buka_tuesday = date("H:i", strtotime($selasa->buka));
+            $tutup_tuesday = date("H:i", strtotime($selasa->tutup));
+        }
 
-                return view('pengunjung.nomorantrian', compact('jam', 'nama', 'tanggal', 'no_urut', 'lokasi', 'keperluan', 'kode', 'display_urut'));
-            }
-            //Cek Hari Kerja
+        $wednesday = Schedule::where(['hari' => 'Rabu'])->get();
+        foreach ($wednesday as $rabu) {
+            $masuk_wednesday = date("H:i", strtotime($rabu->masuk));
+            $istirahat_wednesday = date("H:i", strtotime($rabu->istirahat));
+            $buka_wednesday = date("H:i", strtotime($rabu->buka));
+            $tutup_wednesday = date("H:i", strtotime($rabu->tutup));
+        }
+
+        $thursday = Schedule::where(['hari' => 'Kamis'])->get();
+        foreach ($thursday as $kamis) {
+            $masuk_thursday = date("H:i", strtotime($kamis->masuk));
+            $istirahat_thursday = date("H:i", strtotime($kamis->istirahat));
+            $buka_thursday = date("H:i", strtotime($kamis->buka));
+            $tutup_thursday = date("H:i", strtotime($kamis->tutup));
+        }
+
+        $friday = Schedule::where(['hari' => 'Jumat'])->get();
+        foreach ($friday as $jumat) {
+            $masuk_friday = date("H:i", strtotime($jumat->masuk));
+            $istirahat_friday = date("H:i", strtotime($jumat->istirahat));
+            $buka_friday = date("H:i", strtotime($jumat->buka));
+            $tutup_friday = date("H:i", strtotime($jumat->tutup));
+        }
+
+        $saturday = Schedule::where(['hari' => 'Sabtu'])->get();
+        foreach ($saturday as $sabtu) {
+            $masuk_saturday = date("H:i", strtotime($sabtu->masuk));
+            $istirahat_saturday = date("H:i", strtotime($sabtu->istirahat));
+            $buka_saturday = date("H:i", strtotime($sabtu->buka));
+            $tutup_saturday = date("H:i", strtotime($sabtu->tutup));
+        }
+
+        $sunday = Schedule::where(['hari' => 'Minggu'])->get();
+        foreach ($sunday as $minggu) {
+            $masuk_sunday = date("H:i", strtotime($minggu->masuk));
+            $istirahat_sunday = date("H:i", strtotime($minggu->istirahat));
+            $buka_sunday = date("H:i", strtotime($minggu->buka));
+            $tutup_sunday = date("H:i", strtotime($minggu->tutup));
+        }
+        //Buat jadwal pake spatie-opening hours
+        $range = [
+            'monday'     => [$buka_monday . '-' . $istirahat_monday, $masuk_monday . '-' . $tutup_monday],
+            'tuesday'    => [$buka_tuesday . '-' . $istirahat_tuesday, $masuk_tuesday . '-' . $tutup_tuesday],
+            'wednesday'  => [$buka_wednesday . '-' . $istirahat_wednesday, $masuk_wednesday . '-' . $tutup_wednesday],
+            'thursday'   => [$buka_thursday . '-' . $istirahat_thursday, $masuk_thursday . '-' . $tutup_thursday],
+            'friday'     => [$buka_friday . '-' . $istirahat_friday, $masuk_friday . '-' . $tutup_friday],
+            'saturday'   => [$buka_saturday . '-' . $istirahat_saturday, $masuk_saturday . '-' . $tutup_saturday],
+            'sunday'     => [$buka_sunday . '-' . $istirahat_sunday, $masuk_sunday . '-' . $tutup_sunday],
+        ];
+        $openingHours = OpeningHours::createAndMergeOverlappingRanges($range);
+        $now = new DateTime('now');
+        $range = $openingHours->currentOpenRange($now);
+
+        if ($range) {
+
+            Visitor::create([
+                'tanggal' => $tanggal,
+                'no_urut' => $no_urut,
+                'no_hp' => $no_hp,
+                'nama' => $nama,
+                'lokasi' => $lokasi,
+                'jam' => $jam,
+                'email' => $email,
+                'keperluan' => $keperluan
+            ]);
+
+            return view('pengunjung.nomorantrian', compact('jam', 'nama', 'tanggal', 'no_urut', 'lokasi', 'keperluan', 'kode', 'display_urut'));
         } else {
-            if (date("H") > 16 && date("i") > 0) {
-                return redirect()->back()->with('status', 'Pelayanan Sudah Tutup, Silahkan Isi Pada Hari dan Jam Kerja');
-            } elseif (date("H") < 8) {
-                return redirect()->back()->with('status', 'Pelayanan Belum Buka, Silahkan Isi Pada Hari dan Jam Kerja');
-            } else {
-                Visitor::create([
-                    'tanggal' => $tanggal,
-                    'no_urut' => $no_urut,
-                    'no_hp' => $no_hp,
-                    'nama' => $nama,
-                    'lokasi' => $lokasi,
-                    'jam' => $jam,
-                    'email' => $email,
-                    'keperluan' => $keperluan
-                ]);
-
-                return view('pengunjung.nomorantrian', compact('jam', 'nama', 'tanggal', 'no_urut', 'lokasi', 'keperluan', 'kode', 'display_urut'));
+            //Memanggil hari dalam bahasa inggris
+            $bukalagi = $openingHours->nextOpen($now)->format('D');
+            //Mengubah hari ke bahasa Indoonesia
+            switch ($bukalagi) {
+                case 'Mon':
+                    $hari = "Senin";
+                    break;
+                case 'Tue':
+                    $hari = "Selasa";
+                    break;
+                case 'Wed':
+                    $hari = "Rabu";
+                    break;
+                case 'Thur':
+                    $hari = "Kamis";
+                    break;
+                case 'Fri':
+                    $hari = "Jumat";
+                    break;
+                case 'Sat':
+                    $hari = "Sabtu";
+                    break;
+                case 'Sun':
+                    $hari = "Minggu";
+                    break;
             }
+            //Display pemberitahuan
+            return redirect()->back()->with('status', 'Pelayanan Tutup, Kami Akan Buka Kembali Pada ' . $hari . ' Pukul ' . $openingHours->nextOpen($now)->format('H:i') . ' WIT');
         }
     }
 

@@ -24,7 +24,13 @@
                 </div>
             </div>
         @endif
-      
+        
+            @if (isset($info))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ $info }}
+            </div>
+            @endif
+
         <section id="team" class="team ">
           <div class="container">
     
