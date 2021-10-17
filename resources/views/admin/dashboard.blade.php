@@ -59,7 +59,8 @@ integrity="sha256-pODNVtK3uOhL8FUNWWvFQK0QoQoV3YA9wGGng6mbZ0E=" crossorigin="ano
                         <th scope="col">Tanggal</th>
                         <th scope="col">No Urut</th>
                         <th scope="col">Nama</th>
-                        <th scope="col">No HP</th>
+                        <th scope="col">Keperluan</th>
+                        <th scope="col">Lokasi</th>
                         <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                     </tr>
@@ -104,7 +105,11 @@ function template ( d ) {
         '</tr>'+
         '<tr>'+
             '<td>Email</td>'+
-            '<td>'+d.emaik+'</td>'+
+            '<td>'+d.email+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>No HP</td>'+
+            '<td>'+d.no_hp+'</td>'+
         '</tr>'+
         '</table>'
 
@@ -179,7 +184,8 @@ function template ( d ) {
                     {data: 'tanggal', name : 'tanggal'},
                     {data: 'no_urut', name : 'no_urut'},
                     {data: 'nama', name : 'nama'},
-                    {data: 'no_hp', name : 'no_hp'},
+                    {data: 'keperluan', name : 'keperluan'},
+                    {data: 'lokasi', name : 'lokasi'},
                     {data: 'status', name : 'status'},
                     {
                         data: 'aksi',

@@ -75,16 +75,16 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fa fa-tasks" aria-hidden="true"></i>
-                    <span>Data Pengunjung</span>
+                    <span>Display Antrian</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Data Pengunjung :</h6>
-                        <a class="collapse-item" href="/sorong" target="_blank">Antrian Sorong</a>
-                        <a class="collapse-item" href="/merauke" target="_blank">Antrian Merauke</a>
-                        <a class="collapse-item" href="/ambon" target="_blank">Antrian Ambon</a>
-                        <a class="collapse-item" href="/ternate" target="_blank">Antrian Ternate</a>
-                        <a class="collapse-item" href="/morotai" target="_blank"git >Antrian Morotai</a>
+                        <h6 class="collapse-header">Display Antrian :</h6>
+                        <a class="collapse-item" href="/antriansorong" target="_blank">Antrian Sorong</a>
+                        <a class="collapse-item" href="/antrianmerauke" target="_blank">Antrian Merauke</a>
+                        <a class="collapse-item" href="/antrianambon" target="_blank">Antrian Ambon</a>
+                        <a class="collapse-item" href="/antrianternate" target="_blank">Antrian Ternate</a>
+                        {{-- <a class="collapse-item" href="/antrianmorotai" target="_blank"git >Antrian Morotai</a> --}}
                     </div>
                 </div>
 			</li>
