@@ -81,7 +81,7 @@ class VisitorsController extends Controller
             'nama' => 'required',
             'no_hp' => 'required',
             'lokasi' => 'required',
-            'email' => 'email',
+            'email' => 'email|nullable',
             'keperluan' => 'required'
         ]);
 

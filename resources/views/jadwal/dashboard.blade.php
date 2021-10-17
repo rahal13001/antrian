@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('judul', 'Sistem Antrian LPSPL Sorong')
+@section('judul', 'Jam Kerja Pelayanan')
 
 @section('isi')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css"
