@@ -31,117 +31,118 @@ class VisitorsController extends Controller
         $ternate = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'ternate', 'status' => 'antri'])->count();
         $morotai = Visitor::where(['tanggal' => $tgl, 'lokasi' => 'morotai', 'status' => 'antri'])->count();
 
-        //Melihat Jadwal Libur
-        $libur = Holiday::whereDate('mulai', '<=', $tgl)->whereDate('selesai', '>=', $tgl)->orderBy('mulai')->limit(1)->get();
+        // //Melihat Jadwal Libur
+        // $libur = Holiday::whereDate('mulai', '<=', $tgl)->whereDate('selesai', '>=', $tgl)->orderBy('mulai')->limit(1)->get();
 
-        //melihat hari ini libur atau ga
-        $ceklibur = $libur->count();
-        //eksekusi perintah jika libur
-        if ($ceklibur > 0) {
-            foreach ($libur as $holiday) {
+        // //melihat hari ini libur atau ga
+        // $ceklibur = $libur->count();
+        // //eksekusi perintah jika libur
+        // if ($ceklibur > 0) {
+        //     foreach ($libur as $holiday) {
 
-                $selesai = $holiday->selesai;
-                $keterangan = $holiday->keterangan;
-                //membuat jason menjadi array
-                $lokasi = json_decode($holiday->lokasi);
-            }
+        //         $selesai = $holiday->selesai;
+        //         $keterangan = $holiday->keterangan;
+        //         //membuat jason menjadi array
+        //         $lokasi = json_decode($holiday->lokasi);
+        //     }
 
-            //menampilkan data json dari kolom lokasi
-            $lokasi = implode(" , ", $lokasi);
-            //tampilan tanggal supaya Indonesia Banget
-            $selesai = date('d-m-Y', DateTime::createFromFormat('d-m-Y', $selesai));
-            //Kasih tau kalau kami lagi libur
-            $info = "Hari Ini Kami Di " . $lokasi . " Sedang Libur Sampai Tanggal " . $selesai . " Dalam Rangka " . $keterangan;
-            return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke', 'info'));
-        }
+        //     //menampilkan data json dari kolom lokasi
+        //     $lokasi = implode(" , ", $lokasi);
+        //     //tampilan tanggal supaya Indonesia Banget
+        //     $selesai = date('d-m-Y', DateTime::createFromFormat('d-m-Y', $selesai));
+        //     //Kasih tau kalau kami lagi libur
+        //     $info = "Hari Ini Kami Di " . $lokasi . " Sedang Libur Sampai Tanggal " . $selesai . " Dalam Rangka " . $keterangan;
+        //     return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke', 'info'));
+        // }
 
-        $monday = Schedule::where(['hari' => 'Senin'])->get();
+        // $monday = Schedule::where(['hari' => 'Senin'])->get();
        
-        foreach ($monday as $senin) { 
-            $masuk_monday = date("H:i", strtotime($senin->masuk));
-            $istirahat_monday = date("H:i", strtotime($senin->istirahat));
-            $buka_monday = date("H:i", strtotime($senin->buka));
-            $tutup_monday = date("H:i", strtotime($senin->tutup));
-        }
+        // foreach ($monday as $senin) { 
+        //     $masuk_monday = date("H:i", strtotime($senin->masuk));
+        //     $istirahat_monday = date("H:i", strtotime($senin->istirahat));
+        //     $buka_monday = date("H:i", strtotime($senin->buka));
+        //     $tutup_monday = date("H:i", strtotime($senin->tutup));
+        // }
        
 
-        $tuesday = Schedule::where(['hari' => 'Selasa'])->get();
-        foreach ($tuesday as $selasa) {
-            $masuk_tuesday = date("H:i", strtotime($selasa->masuk));
-            $istirahat_tuesday = date("H:i", strtotime($selasa->istirahat));
-            $buka_tuesday = date("H:i", strtotime($selasa->buka));
-            $tutup_tuesday = date("H:i", strtotime($selasa->tutup));
-        }
+        // $tuesday = Schedule::where(['hari' => 'Selasa'])->get();
+        // foreach ($tuesday as $selasa) {
+        //     $masuk_tuesday = date("H:i", strtotime($selasa->masuk));
+        //     $istirahat_tuesday = date("H:i", strtotime($selasa->istirahat));
+        //     $buka_tuesday = date("H:i", strtotime($selasa->buka));
+        //     $tutup_tuesday = date("H:i", strtotime($selasa->tutup));
+        // }
 
-        $wednesday = Schedule::where(['hari' => 'Rabu'])->get();
-        foreach ($wednesday as $rabu) {
-            $masuk_wednesday = date("H:i", strtotime($rabu->masuk));
-            $istirahat_wednesday = date("H:i", strtotime($rabu->istirahat));
-            $buka_wednesday = date("H:i", strtotime($rabu->buka));
-            $tutup_wednesday = date("H:i", strtotime($rabu->tutup));
-        }
+        // $wednesday = Schedule::where(['hari' => 'Rabu'])->get();
+        // foreach ($wednesday as $rabu) {
+        //     $masuk_wednesday = date("H:i", strtotime($rabu->masuk));
+        //     $istirahat_wednesday = date("H:i", strtotime($rabu->istirahat));
+        //     $buka_wednesday = date("H:i", strtotime($rabu->buka));
+        //     $tutup_wednesday = date("H:i", strtotime($rabu->tutup));
+        // }
 
-        $thursday = Schedule::where(['hari' => 'Kamis'])->get();
-        foreach ($thursday as $kamis) {
-            $masuk_thursday = date("H:i", strtotime($kamis->masuk));
-            $istirahat_thursday = date("H:i", strtotime($kamis->istirahat));
-            $buka_thursday = date("H:i", strtotime($kamis->buka));
-            $tutup_thursday = date("H:i", strtotime($kamis->tutup));
-        }
+        // $thursday = Schedule::where(['hari' => 'Kamis'])->get();
+        // foreach ($thursday as $kamis) {
+        //     $masuk_thursday = date("H:i", strtotime($kamis->masuk));
+        //     $istirahat_thursday = date("H:i", strtotime($kamis->istirahat));
+        //     $buka_thursday = date("H:i", strtotime($kamis->buka));
+        //     $tutup_thursday = date("H:i", strtotime($kamis->tutup));
+        // }
 
-        $friday = Schedule::where(['hari' => 'Jumat'])->get();
-        foreach ($friday as $jumat) {
-            $masuk_friday = date("H:i", strtotime($jumat->masuk));
-            $istirahat_friday = date("H:i", strtotime($jumat->istirahat));
-            $buka_friday = date("H:i", strtotime($jumat->buka));
-            $tutup_friday = date("H:i", strtotime($jumat->tutup));
-        }
+        // $friday = Schedule::where(['hari' => 'Jumat'])->get();
+        // foreach ($friday as $jumat) {
+        //     $masuk_friday = date("H:i", strtotime($jumat->masuk));
+        //     $istirahat_friday = date("H:i", strtotime($jumat->istirahat));
+        //     $buka_friday = date("H:i", strtotime($jumat->buka));
+        //     $tutup_friday = date("H:i", strtotime($jumat->tutup));
+        // }
 
-        $saturday = Schedule::where(['hari' => 'Sabtu'])->get();
-        foreach ($saturday as $sabtu) {
-            $masuk_saturday = date("H:i", strtotime($sabtu->masuk));
-            $istirahat_saturday = date("H:i", strtotime($sabtu->istirahat));
-            $buka_saturday = date("H:i", strtotime($sabtu->buka));
-            $tutup_saturday = date("H:i", strtotime($sabtu->tutup));
-        }
+        // $saturday = Schedule::where(['hari' => 'Sabtu'])->get();
+        // foreach ($saturday as $sabtu) {
+        //     $masuk_saturday = date("H:i", strtotime($sabtu->masuk));
+        //     $istirahat_saturday = date("H:i", strtotime($sabtu->istirahat));
+        //     $buka_saturday = date("H:i", strtotime($sabtu->buka));
+        //     $tutup_saturday = date("H:i", strtotime($sabtu->tutup));
+        // }
 
-        $sunday = Schedule::where(['hari' => 'Minggu'])->get();
-        foreach ($sunday as $minggu) {
-            $masuk_sunday = date("H:i", strtotime($minggu->masuk));
-            $istirahat_sunday = date("H:i", strtotime($minggu->istirahat));
-            $buka_sunday = date("H:i", strtotime($minggu->buka));
-            $tutup_sunday = date("H:i", strtotime($minggu->tutup));
-        }
+        // $sunday = Schedule::where(['hari' => 'Minggu'])->get();
+        // foreach ($sunday as $minggu) {
+        //     $masuk_sunday = date("H:i", strtotime($minggu->masuk));
+        //     $istirahat_sunday = date("H:i", strtotime($minggu->istirahat));
+        //     $buka_sunday = date("H:i", strtotime($minggu->buka));
+        //     $tutup_sunday = date("H:i", strtotime($minggu->tutup));
+        // }
        
-        //Buat jadwal pake spatie-opening hours
-        $range = [
-            'monday'     => [$buka_monday . '-' . $istirahat_monday, $masuk_monday . '-' . $tutup_monday],
-            'tuesday'    => [$buka_tuesday . '-' . $istirahat_tuesday, $masuk_tuesday . '-' . $tutup_tuesday],
-            'wednesday'  => [$buka_wednesday . '-' . $istirahat_wednesday, $masuk_wednesday . '-' . $tutup_wednesday],
-            'thursday'   => [$buka_thursday . '-' . $istirahat_thursday, $masuk_thursday . '-' . $tutup_thursday],
-            'friday'     => [$buka_friday . '-' . $istirahat_friday, $masuk_friday . '-' . $tutup_friday],
-            'saturday'   => [$buka_saturday . '-' . $istirahat_saturday, $masuk_saturday . '-' . $tutup_saturday],
-            'sunday'     => [$buka_sunday . '-' . $istirahat_sunday, $masuk_sunday . '-' . $tutup_sunday],
-        ];
+        // //Buat jadwal pake spatie-opening hours
+        // $range = [
+        //     'monday'     => [$buka_monday . '-' . $istirahat_monday, $masuk_monday . '-' . $tutup_monday],
+        //     'tuesday'    => [$buka_tuesday . '-' . $istirahat_tuesday, $masuk_tuesday . '-' . $tutup_tuesday],
+        //     'wednesday'  => [$buka_wednesday . '-' . $istirahat_wednesday, $masuk_wednesday . '-' . $tutup_wednesday],
+        //     'thursday'   => [$buka_thursday . '-' . $istirahat_thursday, $masuk_thursday . '-' . $tutup_thursday],
+        //     'friday'     => [$buka_friday . '-' . $istirahat_friday, $masuk_friday . '-' . $tutup_friday],
+        //     'saturday'   => [$buka_saturday . '-' . $istirahat_saturday, $masuk_saturday . '-' . $tutup_saturday],
+        //     'sunday'     => [$buka_sunday . '-' . $istirahat_sunday, $masuk_sunday . '-' . $tutup_sunday],
+        // ];
 
-        $openingHours = OpeningHours::createAndMergeOverlappingRanges($range);
+        // $openingHours = OpeningHours::createAndMergeOverlappingRanges($range);
      
-        $now = new DateTime('now');
-        $range = $openingHours->currentOpenRange($now);
+        // $now = new DateTime('now');
+        // $range = $openingHours->currentOpenRange($now);
         
-        if ($range) {
-            $woro = "Halo Sahabat Pelayanan LPSPL Sorong, Hari Ini Kami Buka Pukul " . $range->start() . " - " . $range->end() . " WIT";
+        // if ($range) {
+        //     $woro = "Halo Sahabat Pelayanan LPSPL Sorong, Hari Ini Kami Buka Pukul " . $range->start() . " - " . $range->end() . " WIT";
 
-            //ini kalau ga lagi libur dan di jam pelayanan
-            return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke', 'woro'));
-        } else {
+        //     //ini kalau ga lagi libur dan di jam pelayanan
+        //     return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke', 'woro'));
+        // } else {
         
-            // Display pemberitahuan
-            $info = 'Mohon Maaf Pelayanan Tutup, Silahkan Coba Kembali Pada Hari dan Jam Kerja';
+        //     // Display pemberitahuan
+        //     $info = 'Mohon Maaf Pelayanan Tutup, Silahkan Coba Kembali Pada Hari dan Jam Kerja';
 
-            //ini kalau ga lagi libur tapi di luar jam pelayanan
-            return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke', 'info'));
-        }
+        //     //ini kalau ga lagi libur tapi di luar jam pelayanan
+        //     return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke', 'info'));
+        // }
+        return view('pengunjung.index', compact('sorong', 'ambon', 'ternate', 'morotai', 'merauke'));
     }
 
     /**
